@@ -16,5 +16,23 @@
       user:
         name: atlantis
         group: atlantis
-        create_home: no
-        
+    - name: Install unzip package
+      apt:
+        name: unzip
+        state: latest
+    - name: Download and unarchive Terraform
+      ansible.builtin.unarchive:
+        src: https://releases.hashicorp.com/terraform/0.15.4/terraform_0.15.4_linux_amd64.zip
+        dest: /usr/local/bin
+        remote_src: yes
+    - name: Download and unarchive Atlantis
+      ansible.builtin.unarchive:
+        src: https://github.com/runatlantis/atlantis/releases/download/v0.17.0/atlantis_linux_amd64.zip
+        dest: /usr/local/bin
+        remote_src: yes
+    - name: Create random secret required for Atlantis configuration
+      set_fact:
+        atlantis_secret: "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=32') }}"
+      run_once: yes
+#    - name: Run the Atlantis command
+#      ansible.builtin.command:
