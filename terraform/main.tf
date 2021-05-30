@@ -50,23 +50,15 @@ resource "aws_route_table_association" "a" {
   route_table_id = aws_route_table.main.id
 }
 
-resource "aws_security_group" "allow_web" {
-  name        = "allow_web"
-  description = "Allow web inbound traffic"
+resource "aws_security_group" "allow_atlantis" {
+  name        = "allow_atlantis"
+  description = "Allow atlantis inbound traffic"
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    description = "443 from world"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "80 from world"
-    from_port   = 80
-    to_port     = 80
+    description = "atlantis from world"
+    from_port   = 4141
+    to_port     = 4141
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -90,7 +82,7 @@ resource "aws_security_group" "allow_web" {
 resource "aws_network_interface" "test" {
   subnet_id       = aws_subnet.main.id
   private_ips     = ["10.0.1.50"]
-  security_groups = [aws_security_group.allow_web.id]
+  security_groups = [aws_security_group.allow_atlantis.id]
 }
 
 resource "aws_eip" "eip" {
@@ -109,13 +101,7 @@ resource "aws_instance" "server" {
     network_interface_id = aws_network_interface.test.id
   }
 
-  user_data = <<-EOF
-              #!/bin/bash
-              sudo apt update -y
-              sudo apt install nginx -y
-              sudo systemctl start nginx
-              EOF
   tags = {
-    Name = "web-server"
+    Name = "atlantis"
   }
 }
