@@ -105,3 +105,17 @@ resource "aws_instance" "server" {
     Name = "atlantis"
   }
 }
+
+resource "aws_instance" "server-test" {
+  ami           = "ami-09e67e426f25ce0d7"
+  instance_type = "t2.micro"
+  key_name      = "deployer"
+  network_interface {
+    device_index         = 0
+    network_interface_id = aws_network_interface.test.id
+  }
+
+  tags = {
+    Name = "test"
+  }
+}
