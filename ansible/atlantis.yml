@@ -1,0 +1,20 @@
+---
+- name: Build the atlantis server
+  hosts: atlantis
+  remote_user: ubuntu
+  become: true
+  tasks:
+    - name: Update all packages to their latest version
+      apt:
+        name: "*"
+        state: latest
+    - name: Ensure group "atlantis" exists
+      ansible.builtin.group:
+        name: atlantis
+        state: present
+    - name: Create user "atlantis" and add to group of "atlantis"
+      user:
+        name: atlantis
+        group: atlantis
+        create_home: no
+        
