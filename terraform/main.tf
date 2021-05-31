@@ -37,11 +37,22 @@ resource "aws_route_table" "main" {
 }
 
 resource "aws_subnet" "main" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = "10.0.1.0/24"
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.0.1.0/24"
+  availability_zone = "us-east-1a"
 
   tags = {
     Name = "Main"
+  }
+}
+
+resource "aws_subnet" "secondary" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.0.2.0/24"
+  availability_zone = "us-east-1b"
+
+  tags = {
+    Name = "Secondary"
   }
 }
 
@@ -93,9 +104,11 @@ resource "aws_eip" "eip" {
 }
 
 resource "aws_instance" "server" {
-  ami           = "ami-09e67e426f25ce0d7"
-  instance_type = "t2.micro"
-  key_name      = "deployer"
+  ami               = "ami-09e67e426f25ce0d7"
+  instance_type     = "t2.micro"
+  key_name          = "deployer"
+  availability_zone = "us-east-1a"
+
   network_interface {
     device_index         = 0
     network_interface_id = aws_network_interface.test.id
@@ -103,5 +116,19 @@ resource "aws_instance" "server" {
 
   tags = {
     Name = "atlantis"
+  }
+}
+
+resource "aws_lb" "main" {
+  name               = "atlantis-lb-tf"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.allow_atlantis.id]
+  subnets            = [aws_subnet.main.id, aws_subnet.secondary.id]
+
+  enable_deletion_protection = true
+
+  tags = {
+    Environment = "atlantis"
   }
 }
