@@ -16,9 +16,11 @@
       user:
         name: atlantis
         group: atlantis
-    - name: Install unzip package
+    - name: Install required packages
       apt:
-        name: unzip
+        name:
+        - unzip
+        - awscli
         state: latest
     - name: Download and unarchive Terraform
       ansible.builtin.unarchive:

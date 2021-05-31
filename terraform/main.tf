@@ -73,7 +73,7 @@ resource "aws_security_group" "allow_atlantis" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  
+
   ingress {
     description = "atlantis from world"
     from_port   = 4141
