@@ -1,0 +1,17 @@
+[Unit]
+Description = Atlantis
+After = network.target
+
+[Service]
+EnvironmentFile=/etc/atlantis-environment
+Type = simple
+ExecStart = /usr/local/bin/atlantis server --config /opt/atlantis/atlantis.yaml --hide-prev-plan-comments --allow-draft-prs --default-tf-version="v0.12.20"
+ExecStop = /bin/kill $MAINPID
+TimeoutStopSec = 5
+SuccessExitStatus = 143
+User = atlantis
+Group = atlantis
+Restart = always
+
+[Install]
+WantedBy = multi-user.target
