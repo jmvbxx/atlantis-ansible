@@ -67,6 +67,14 @@ resource "aws_security_group" "allow_atlantis" {
   vpc_id      = aws_vpc.main.id
 
   ingress {
+    description = "80 from world"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
     description = "atlantis from world"
     from_port   = 4141
     to_port     = 4141
