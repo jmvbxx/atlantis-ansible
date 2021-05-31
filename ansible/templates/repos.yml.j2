@@ -1,0 +1,14 @@
+# https://www.runatlantis.io/docs/apply-requirements.html
+# given branch protections this should prevent:
+# 1. require not just an approval but an approval from a `CODEOWNER`
+# 2. require the branch to be up to date
+# 3. require that status checks pass (can't attempt to apply a failed plan)
+
+# https://www.runatlantis.io/docs/repo-level-atlantis-yaml.html#enabling-atlantis-yaml
+# explicitly deny custom workflows as it allow for
+# repo configs to run arbitraty commands/code on atlantis server
+
+repos:
+- id: /.*/
+  apply_requirements: [mergeable, approved]
+  allow_custom_workflows: false
