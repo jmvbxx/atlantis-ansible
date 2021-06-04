@@ -4,17 +4,17 @@ resource "aws_lb_listener" "lb_listener" {
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = aws_lb_target_group.main.id
+    target_group_arn = aws_lb_target_group.atlantis.id
     type             = "forward"
   }
 }
 
 resource "aws_lb_listener_rule" "listener_rule" {
-  depends_on   = [aws_lb_target_group.main]
+  depends_on   = [aws_lb_target_group.atlantis]
   listener_arn = aws_lb_listener.lb_listener.arn
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.main.id
+    target_group_arn = aws_lb_target_group.atlantis.id
   }
   condition {
     host_header {
@@ -23,15 +23,15 @@ resource "aws_lb_listener_rule" "listener_rule" {
   }
 }
 
-resource "aws_lb_target_group" "main" {
-  name     = "tf-main-lb-tg"
+resource "aws_lb_target_group" "atlantis" {
+  name     = "tf-atlantis-lb-tg"
   port     = 80
   protocol = "HTTP"
   vpc_id   = aws_vpc.main.id
 }
 
 resource "aws_lb_target_group_attachment" "main" {
-  target_group_arn = aws_lb_target_group.main.arn
+  target_group_arn = aws_lb_target_group.atlantis.arn
   target_id        = aws_instance.server.id
   port             = 80
 }
