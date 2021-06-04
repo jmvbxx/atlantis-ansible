@@ -1,4 +1,4 @@
-resource "aws_lb_listener" "lb_listener-4141" {
+resource "aws_lb_listener" "lb_listener-80" {
   load_balancer_arn = aws_lb.main.arn
   port              = "80"
   protocol          = "HTTP"
