@@ -11,7 +11,7 @@ resource "aws_lb_listener" "lb_listener" {
 
 resource "aws_lb_listener_rule" "listener_rule" {
   depends_on   = [aws_lb_target_group.main]
-  listener_arn = aws_lb_listener.lb_listener-4141.arn
+  listener_arn = aws_lb_listener.lb_listener.arn
   action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.main.id
