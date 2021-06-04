@@ -1,22 +1,6 @@
-resource "aws_lb_listener" "lb_listener-80" {
-  load_balancer_arn = aws_lb.main.arn
-  port              = "80"
-  protocol          = "HTTP"
-
-  default_action {
-    type = "redirect"
-
-    redirect {
-      port        = "4141"
-      protocol    = "HTTP"
-      status_code = "HTTP_301"
-    }
-  }
-}
-
 resource "aws_lb_listener" "lb_listener-4141" {
   load_balancer_arn = aws_lb.main.arn
-  port              = "4141"
+  port              = "80"
   protocol          = "HTTP"
 
   default_action {
