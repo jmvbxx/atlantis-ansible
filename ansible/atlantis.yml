@@ -19,14 +19,16 @@
     - name: Install required packages
       apt:
         name:
-        - unzip
-        - awscli
+          - unzip
+          - awscli
         state: latest
     - name: Download and unarchive Terraform
       ansible.builtin.unarchive:
         src: https://releases.hashicorp.com/terraform/0.15.4/terraform_0.15.4_linux_amd64.zip
         dest: /usr/local/bin
         remote_src: yes
+
+    # atlantis & configuration
     - name: Download and unarchive Atlantis
       ansible.builtin.unarchive:
         src: https://github.com/runatlantis/atlantis/releases/download/v0.17.0/atlantis_linux_amd64.zip
@@ -65,3 +67,12 @@
         state: started
         name: atlantis.service
         enabled: yes
+
+    # nginx & configuration
+    - name: Install nginx
+      apt:
+        name: nginx-common
+        state: latest
+    - name: Unlink default nginx site configuration file
+      ansible.builtin.command: unlink /etc/nginx/sites-enabled/default
+    
