@@ -25,7 +25,7 @@ resource "aws_lb_listener_rule" "listener_rule" {
 
 resource "aws_lb_target_group" "main" {
   name     = "tf-main-lb-tg"
-  port     = 4141
+  port     = 80
   protocol = "HTTP"
   vpc_id   = aws_vpc.main.id
 }
@@ -33,5 +33,5 @@ resource "aws_lb_target_group" "main" {
 resource "aws_lb_target_group_attachment" "main" {
   target_group_arn = aws_lb_target_group.main.arn
   target_id        = aws_instance.server.id
-  port             = 4141
+  port             = 80
 }
