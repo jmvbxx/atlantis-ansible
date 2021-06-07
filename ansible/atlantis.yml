@@ -89,3 +89,7 @@
         src: /etc/nginx/sites-available/reverse-proxy.conf
         dest: /etc/nginx/sites-enabled/reverse-proxy.conf
         state: link
+    - name: Reload nginx
+      ansible.builtin.systemd:
+        name: nginx.service
+        state: reloaded
