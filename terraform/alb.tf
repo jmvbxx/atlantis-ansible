@@ -23,7 +23,7 @@ resource "aws_lb_listener" "lb_listener" {
   }
 }
 
-resource "aws_lb_listener_certificate" "example" {
+resource "aws_lb_listener_certificate" "atlantis_cert" {
   listener_arn    = aws_lb_listener.lb_listener.arn
   certificate_arn = data.aws_acm_certificate.atlantis_amazon_issued.arn
 }
