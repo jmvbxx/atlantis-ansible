@@ -62,7 +62,7 @@ resource "aws_route_table_association" "associate_main" {
 }
 
 resource "aws_route_table_association" "associate_secondary" {
-  subnet_id = aws_subnet.secondary.id
+  subnet_id      = aws_subnet.secondary.id
   route_table_id = aws_route_table.main.id
 }
 
@@ -75,6 +75,14 @@ resource "aws_security_group" "allow_atlantis" {
     description = "80 from world"
     from_port   = 80
     to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "443 from world"
+    from_port   = 443
+    to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -121,19 +129,5 @@ resource "aws_instance" "server" {
 
   tags = {
     Name = "atlantis"
-  }
-}
-
-resource "aws_lb" "main" {
-  name               = "atlantis-lb-tf"
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = [aws_security_group.allow_atlantis.id]
-  subnets            = [aws_subnet.main.id, aws_subnet.secondary.id]
-
-  enable_deletion_protection = true
-
-  tags = {
-    Environment = "atlantis"
   }
 }
