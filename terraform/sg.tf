@@ -1,6 +1,6 @@
 resource "aws_security_group" "allow_atlantis" {
   name        = "allow_atlantis"
-  description = "Allow atlantis inbound traffic (alb)"
+  description = "Allow atlantis inbound traffic"
   vpc_id      = aws_vpc.main.id
 
   ingress {
