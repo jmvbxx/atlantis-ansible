@@ -16,16 +16,12 @@ resource "aws_lb_listener" "lb_listener" {
   load_balancer_arn = aws_lb.main.arn
   port              = "443"
   protocol          = "HTTPS"
+  certificate_arn   = data.aws_acm_certificate.atlantis_amazon_issued.arn
 
   default_action {
     target_group_arn = aws_lb_target_group.atlantis.id
     type             = "forward"
   }
-}
-
-resource "aws_lb_listener_certificate" "atlantis_cert" {
-  listener_arn    = aws_lb_listener.lb_listener.arn
-  certificate_arn = data.aws_acm_certificate.atlantis_amazon_issued.arn
 }
 
 resource "aws_lb_listener_rule" "listener_rule" {

@@ -62,7 +62,7 @@ resource "aws_route_table_association" "associate_main" {
 }
 
 resource "aws_route_table_association" "associate_secondary" {
-  subnet_id = aws_subnet.secondary.id
+  subnet_id      = aws_subnet.secondary.id
   route_table_id = aws_route_table.main.id
 }
 
