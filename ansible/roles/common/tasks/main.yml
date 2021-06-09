@@ -1,0 +1,13 @@
+---
+
+- name: Update all packages to their latest version
+  apt:
+    name: "*"
+    state: latest
+
+- name: Install required packages
+  apt:
+    name:
+      - unzip
+      - awscli
+    state: latest

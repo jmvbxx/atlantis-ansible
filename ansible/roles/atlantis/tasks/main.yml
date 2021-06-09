@@ -1,0 +1,56 @@
+---
+
+- name: Ensure group "atlantis" exists
+  ansible.builtin.group:
+    name: atlantis
+    state: present
+
+- name: Create user "atlantis" and add to group of "atlantis"
+  user:
+    name: atlantis
+    group: atlantis
+
+- name: Download and unarchive Atlantis
+  ansible.builtin.unarchive:
+    src: https://github.com/runatlantis/atlantis/releases/download/v0.17.0/atlantis_linux_amd64.zip
+    dest: /usr/local/bin
+    remote_src: yes
+
+- name: Create atlantis directory if it does not exist
+  ansible.builtin.file:
+    path: /opt/atlantis
+    state: directory
+    mode: '0755'
+    owner: atlantis
+    group: atlantis
+
+- name: Template a file to /opt/atlantis/atlantis.yml
+  ansible.builtin.template:
+    src: atlantis.yml.j2
+    dest: /opt/atlantis/atlantis.yml
+    owner: atlantis
+    group: atlantis
+    mode: '0600'
+
+- name: Template a file to /opt/atlantis/repos.yml
+  ansible.builtin.template:
+    src: repos.yml.j2
+    dest: /opt/atlantis/repos.yml
+    owner: atlantis
+    group: atlantis
+    mode: '0600'
+
+- name: Template a file to /etc/systemd/system/atlantis.service
+  ansible.builtin.template:
+    src: atlantis.service.j2
+    dest: /etc/systemd/system/atlantis.service
+
+- name: Force systemd to reread configs
+  ansible.builtin.systemd:
+    daemon_reload: yes
+
+- name: Make sure atlantis is running
+  ansible.builtin.systemd:
+    state: started
+    name: atlantis.service
+    enabled: yes
