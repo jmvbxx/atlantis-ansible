@@ -1,0 +1,29 @@
+---
+
+- name: Apply common configuration to all nodes
+  hosts: all
+  become: true
+
+  roles:
+    - common
+
+- name: Configure and deploy terraform code
+  hosts: atlantis
+  become: true
+
+  roles:
+    - terraform
+
+- name: Configure and deploy atlantis code
+  hosts: atlantis
+  become: true
+
+  roles:
+    - atlantis
+
+- name: Configure and deploy nginx code
+  hosts: atlantis
+  become: true
+
+  roles:
+    - nginx

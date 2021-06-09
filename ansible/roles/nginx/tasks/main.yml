@@ -1,0 +1,31 @@
+---
+
+- name: Install nginx
+  apt:
+    name: nginx-common
+    state: latest
+
+- name: Check if /etc/nginx/sites-enabled/default exists
+  stat:
+    path: /etc/nginx/sites-enabled/default
+  register: default_file
+
+- name: Unlink default nginx site configuration file
+  ansible.builtin.command: unlink /etc/nginx/sites-enabled/default
+  when: default_file.stat.exists
+
+- name: Template a file to /etc/nginx/sites-enabled/reverse-proxy.conf
+  ansible.builtin.template:
+    src: ./templates/reverse-proxy.conf.j2
+    dest: /etc/nginx/sites-available/reverse-proxy.conf
+
+- name: Create a symlink for /etc/nginx/sites-enabled/reverse-proxy.conf
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/reverse-proxy.conf
+    dest: /etc/nginx/sites-enabled/reverse-proxy.conf
+    state: link
+
+- name: Reload nginx
+  ansible.builtin.systemd:
+    name: nginx.service
+    state: reloaded
