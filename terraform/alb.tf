@@ -1,12 +1,31 @@
+resource "aws_lb" "main" {
+  name               = "atlantis-lb-tf"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.allow_atlantis.id]
+  subnets            = [aws_subnet.main.id, aws_subnet.secondary.id]
+
+  enable_deletion_protection = true
+
+  tags = {
+    Environment = "atlantis"
+  }
+}
+
 resource "aws_lb_listener" "lb_listener" {
   load_balancer_arn = aws_lb.main.arn
-  port              = "80"
-  protocol          = "HTTP"
+  port              = "443"
+  protocol          = "HTTPS"
 
   default_action {
     target_group_arn = aws_lb_target_group.atlantis.id
     type             = "forward"
   }
+}
+
+resource "aws_lb_listener_certificate" "example" {
+  listener_arn    = aws_lb_listener.lb_listener.arn
+  certificate_arn = data.aws_acm_certificate.atlantis_amazon_issued.arn
 }
 
 resource "aws_lb_listener_rule" "listener_rule" {
