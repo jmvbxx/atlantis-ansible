@@ -66,47 +66,11 @@ resource "aws_route_table_association" "associate_secondary" {
   route_table_id = aws_route_table.main.id
 }
 
-resource "aws_security_group" "allow_atlantis" {
-  name        = "allow_atlantis"
-  description = "Allow atlantis inbound traffic"
-  vpc_id      = aws_vpc.main.id
-
-  ingress {
-    description = "80 from world"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "443 from world"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "22 from world"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
 
 resource "aws_network_interface" "test" {
   subnet_id       = aws_subnet.main.id
   private_ips     = ["10.0.1.50"]
-  security_groups = [aws_security_group.allow_atlantis.id]
+  security_groups = [aws_security_group.allow_ssh.id]
 }
 
 resource "aws_eip" "eip" {
