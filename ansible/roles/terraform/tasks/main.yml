@@ -8,6 +8,7 @@
 - name: Remove /usr/local/bin/terraform (if exists)
   ansible.builtin.file:
     path: /usr/local/bin/terraform
+    state: absent
   when: terraform_bin.stat.exists
 
 - name: Download and unarchive Terraform
