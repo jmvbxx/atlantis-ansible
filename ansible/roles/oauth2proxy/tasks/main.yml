@@ -1,0 +1,18 @@
+---
+
+- name: Check if /usr/local/bin/oauth2proxy exists
+  stat:
+    path: /usr/local/bin/oauth2proxy
+  register: oauth2proxy_bin
+
+- name: Remove /usr/local/bin/oauth2proxy (if exists)
+  ansible.builtin.file:
+    path: /usr/local/bin/oauth2proxy
+    state: absent
+  when: oauth2proxy_bin.stat.exists
+
+- name: Download and unarchive oauth2proxy
+  ansible.builtin.unarchive:
+    src: https://github.com/oauth2-proxy/oauth2-proxy/releases/download/v7.1.3/oauth2-proxy-v7.1.3.linux-amd64.tar.gz
+    dest: /usr/local/bin
+    remote_src: yes

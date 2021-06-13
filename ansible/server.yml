@@ -27,3 +27,10 @@
 
   roles:
     - nginx
+
+- name: Configure and deploy oauth2proxy code
+  hosts: atlantis
+  become: true
+
+  roles:
+    - oauth2proxy
