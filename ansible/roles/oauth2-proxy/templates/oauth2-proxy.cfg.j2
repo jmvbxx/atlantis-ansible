@@ -1,0 +1,12 @@
+email_domains=["*"]
+upstreams=["http://127.0.0.1:4141/"]
+skip_auth_regex="(/events|/healthz)"
+scope="read:org,user:email"
+cookie_secret="{{ lookup('aws_ssm', '/oauth2proxy/cookie-secret' ) }}"
+cookie_httponly=true
+cookie_secure=true
+provider="github"
+github-user="jmvbxx@gmail.com"
+client_id="{{ lookup('aws_ssm', '/oauth2proxy/gh-client-id' ) }}"
+client_secret="{{ lookup('aws_ssm', '/oauth2proxy/gh-client-secret' ) }}"
+http_address="http://:4180"

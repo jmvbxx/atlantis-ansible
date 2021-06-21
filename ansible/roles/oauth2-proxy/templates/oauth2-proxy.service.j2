@@ -1,0 +1,13 @@
+[Unit]
+Description = oauth2-proxy daemon service
+After = syslog.target network.target
+
+[Service]
+Type = simple
+ExecStart = /usr/local/bin/oauth2-proxy --config=/etc/oauth2-proxy.cfg
+ExecStop = /bin/kill $MAINPID
+KillMode = process
+Restart = always
+
+[Install]
+WantedBy = multi-user.target
