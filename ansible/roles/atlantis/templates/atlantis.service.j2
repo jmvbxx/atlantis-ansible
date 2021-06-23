@@ -4,7 +4,7 @@ After = network.target
 
 [Service]
 Type = simple
-ExecStart = /usr/local/bin/atlantis server --config /opt/atlantis/atlantis.yml --hide-prev-plan-comments --allow-draft-prs --default-tf-version="v0.15.4"
+ExecStart = /usr/local/bin/atlantis server --config /opt/atlantis/atlantis.yml --hide-prev-plan-comments --allow-draft-prs --default-tf-version="v1.0.0"
 ExecStop = /bin/kill $MAINPID
 TimeoutStopSec = 5
 SuccessExitStatus = 143
